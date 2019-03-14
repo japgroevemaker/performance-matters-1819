@@ -1,0 +1,26 @@
+<% include header.ejs %>
+
+<div class="info">
+  <section class="text">
+    <h1 title="<%=data[num]['title']['value']%>"><%=data[num]['title']['value']%></h1>
+    <p><%=data[num]['description']['value']%></p>
+    <p class="creator"><%=data[num]['creator']['value']%></p>
+    <p class="date"><%=data[num]['endDate']['value']%></p>
+    <p class="provenance"><%=data[num]['provenance']['value']%></p>
+    <a href="<%=data[num]['cho']['value']%>">Klik hier om naar de bronpagina te gaan</a>
+  </section>
+  <img class="bigimg" src="<%=data[num]['img']['value']%>">
+</div>
+<div class="buttons">
+  <% if(locals.num){ %>
+   <% if(parseInt(num) !== 0) { %>
+     <a href="/search_q=<%=queryZoekTerm%>/detail=<%=parseInt(num)-1%>">prev</a>
+   <% } %>
+     <a href="/search_q=<%=queryZoekTerm%>">Home</a>
+   <% if(parseInt(num) !== data.length-1) { %>
+     <a href="/search_q=<%=queryZoekTerm%>/detail=<%=parseInt(num)+1%>">next</a>
+   <% } %>
+ <% } %>
+</div>
+
+<% include footer.ejs %>

@@ -1,0 +1,25 @@
+<% include header.ejs %>
+<header>
+  <img src="/image/logo.svg" />
+  <h1>Doorzoek het stadsarchief</h1>
+  <p>Vul een aan Amsterdam gerelateerde zoekterm in. Bijvoorbeeld: Rokin</p>
+</header>
+
+<form class="" action="/" method="post">
+  <input type="text" name="zoekTerm" placeholder="Zoek">
+  <input type="submit" name="button" value="Zoek">
+</form>
+<p id="error">Uw zoek opdracht heeft geen resultaten opgeleverd</p>
+<section id="images">
+  <div>
+    <% if(locals.data) { %>
+      <% data.forEach((el, i) => { %>
+        <a href="/search_q=<%=zoekTerm%>/detail=<%=i%>">
+          <img src="<%=el['img']['value']%>" alt="<%=el['title']['value']%>">
+        </a>
+      <% }) %>
+    <% } %>
+  </p>
+</section>
+<div class="loader"></div>
+<% include footer.ejs %>
