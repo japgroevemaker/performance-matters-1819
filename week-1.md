@@ -1,49 +1,146 @@
-# Opdrachten Week 1
-Minor Web Development - Performance Matters
+# App ombouwen naar server-side
+In de eerste week was de opdracht je OBA app zo om te bouwen dat de API server-side gerenderd wordt. Dit doen we met behulp van ```nodejs```, ```express``` en ```ejs```.
 
-## Intentie
-Deze week gaan we de client side OBA app ombouwen naar een server side versie. Hiervoor gebruiken we Node.js & Express. Daarnaast gaan we npm gebruiken als build tool en met CommonJS en Browserify optimalisatie doen voor performance.
+### ```npm```
+Ik heb als eerst mijn terminal geopend en ben naar de juiste directory gegaan. Toen ik in die directory zat heb ik ```npm init``` in de terminal ingetypt, deze command maakt ```package.json``` aan. ```package.json``` is de basis van je app. Daarna heb ik ```npm install express, node-fetch, ejs``` ingetypt in de commandline. Dit zorgt ervoor dat de juiste ```node-modules``` in de juiste directory worden geinstalleerd worden. ```node``` heb ik niet hoeven installeren omdat dit al globaal op mijn computer geinstalleerd is en daarom niet nog een keer geinstalleerd hoeft te worden.
 
-## Werkwijze
-Er is 12 uur ingeroosterd om deze week zelfstandig aan de opdrachten van dit vaak te werken. Probeer je werk goed te plannen! Tussentijds wordt in standup meetings en klassikale bijeenkomsten de voortgang gemonitord. Aan het eind van de week wordt je op theoretische kennis getoetst en op het begrip van de code die je volgens de opdrachten schrijft.
+### Wat is ```nodeJS``` ?
+a ```nodeJS``` is een gratis ```JavaScript``` open source cross platform dat je in staat stelt snel een netwerk applicatie te bouwen.
 
-## Opdrachten
-1. [Bouw de OBA App om naar een server side versie met Node.js & Express][opdracht1]
-2. [Tooling][opdracht2]
-3. [Universal / Isomorphic app (extra)][opdracht3]
+### Wat is ```express```?
+, ```express``` is een light-weight web applicatie die je helpt je web applicatie server-side te organiseren.
 
-### Opdracht 1: Pas de OBA app aan naar een server side versie met Node.js & Express
+### Het opzetten
+Het implementeren werkte als volgt:
 
-Denk bij het aanpassen goed na over wat de MVP (of core functionaliteit) is van de OBA app. Over het algemeen is dat een overview page, met een lijstje met items die elk door linken naar een detail page. Zorg ervoor dat je eerst de HTML genereert vanaf de server, vervolgens kijk je in hoeverre je de CSS kan aanpassen, en tenslotte probeer je de app zoveel mogelijk te enhancen met client side JavaScript. 
+Dit is de ```index.js```, als het ware de "server".
+```js
+const express = require('express');
+const ejs = require('ejs');
+const bodyParser = require('body-parser');
+const app = express();
 
-Fork deze repo, en werk daar je server side app uit: [Performance Matters 1819](https://github.com/cmda-minor-web/performance-matters-1819)
+app.set('view engine', 'ejs');
+app.use(express.static('public'))
 
-Documenteer in je readme.md hoe je de server draaiend krijgt; git clone && npm start 
+app.get("/", function(req, res) {
+  res.render("index")
+});
 
-#### Resources
-* [Introduction to Node.js](https://egghead.io/courses/introduction-to-node-the-fundamentals)
-* [Getting started with Express.js](https://egghead.io/courses/getting-started-with-express-js)
-* [Export modules with Node.js](https://egghead.io/lessons/node-js-export-modules-in-node-js)
+app.listen(4444)
+console.log('Port 4444');
+```
+Dit is de basis structuur, vervolgens ga je deze aanpassen en er voor zorgen dat de API van de OBA server-side binnen wordt gehaald en wordt gerenderd.
+Dit ziet er als volgt uit:
+
+```js
+const express = require('express');
+const ejs = require('ejs');
+const bodyParser = require('body-parser');
+const parser = bodyParser.urlencoded({extended: false}) // kijkt naar values in form
+const app = express();
+const fetch = require("node-fetch")
+
+let data
+let zoekTerm = ""
+
+app.set('view engine', 'ejs');
+app.use(express.static('public')) // in welke map staan je EJS bestanden
+
+app.get("/", (req, res) => {
+  res.render('index')
+})
+
+app.post("/", parser, (req, res) => {
+  zoekTerm = req.body.zoekTerm
+  res.redirect(`/search_q=${zoekTerm}`)
+})
+
+app.get("/search_q=:id", (req,res) => {
+  let zoekTerm = req.params.id
+  search(res, zoekTerm)
+})
+
+app.get("/search_q=:id/detail=:num", (req, res) => {
+
+  let queryZoekTerm = req.params.id
+  let num = req.params.num
+
+  if(queryZoekTerm === zoekTerm) {
+    res.render("detail", {data: data, queryZoekTerm, num})
+  } else {
+    zoekTerm = queryZoekTerm
+    search(res, queryZoekTerm, num)
+  }
+})
+
+function search(res, zoekTerm, num) {
+
+  const baseURL = "https://api.data.adamlink.nl/datasets/AdamNet/all/services/endpoint/sparql?default-graph-uri=&query="
+  const endUrl = "&format=application%2Fsparql-results%2Bjson&timeout=0&debug=on"
+  const sparqlquery = `
+    PREFIX dc: <http://purl.org/dc/elements/1.1/>
+    PREFIX dct: <http://purl.org/dc/terms/>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX sem: <http://semanticweb.cs.vu.nl/2009/11/sem/>
+
+    SELECT ?cho ?title ?img ?endDate ?creator ?provenance ?description WHERE {
+     ?cho dc:type ?type .
+        ?cho dc:title ?title .
+        ?cho dc:creator ?creator .
+        ?cho dct:provenance ?provenance .
+        ?cho dc:description ?description .
+      ?cho foaf:depiction ?img .
+      ?cho sem:hasEndTimeStamp ?endDate .
+
+      FILTER REGEX(?title, '${zoekTerm}', 'i')
+  }`;
+  fetch(`${baseURL}${sparqlquery}${endUrl}`)
+  .then(resp => resp.json())
+  .then(resp => {
+    data = resp.results.bindings
+
+    if(num){
+      res.render("detail", {data: data, num})
+    } else {
+      res.render("index", {data: data, zoekTerm})
+    }
+  }).catch(err => console.log(err));
+}
+
+app.listen(4444)
+console.log('Port 4444');
+```
 
 
-### Opdracht 2: Tooling
+Vervolgens maak je een ```index.ejs``` bestand aan, via dit bestand wordt alles in de ```DOM``` gerenderd.
 
-Installeer en implementeer de tooling voor je app. Je kan hierbij kiezen hierbij voor bijvoorbeeld een workflow met NPM scripts, CommonJS en Browserify.
+```html
+<% include header.ejs %>
+<header>
+  <img src="/image/logo.svg" />
+  <h1>Doorzoek het stadsarchief</h1>
+  <p>Vul een aan Amsterdam gerelateerde zoekterm in. Bijvoorbeeld: Rokin</p>
+</header>
 
-Documenteer in je readme.md hoe jij de build heb geïmplementeerd
-
-#### Resources
-[Introduction to NPM scripts](https://medium.freecodecamp.org/introduction-to-npm-scripts-1dbb2ae01633)
-
-### Opdracht 3: Universal / Isomorphic app (extra) 
-
-Met de komst van Node.js is het mogelijk om JavaScript op de server te runnen. Een Universal of Isomorphic app is een app waarvan (een gedeelte van) de code zowel op de client als op de server kan worden gebruikt. Probeer van jouw app een universal app te maken.
-
-
-#### Resources
-[https://github.com/wooorm/dictionary](https://github.com/wooorm/dictionary)
-
-<!-- Bindings -->
-[opdracht1]: https://github.com/cmda-minor-web/performance-matters-1819/blob/master/week-1.md#opdracht-1-pas-de-adamnet-app-aan-naar-een-server-side-versie-met-nodejs--express
-[opdracht2]: https://github.com/cmda-minor-web/performance-matters-1819/blob/master/week-1.md#opdracht-2-tooling-npm-scripts-commonjs--browserify
-[opdracht3]: https://github.com/cmda-minor-web/performance-matters-1819/blob/master/week-1.md#opdracht-3-universal--isomorphic-app-extra
+<form class="" action="/" method="post">
+  <input type="text" name="zoekTerm" placeholder="Zoek">
+  <input type="submit" name="button" value="Zoek">
+</form>
+<p id="error">Uw zoek opdracht heeft geen resultaten opgeleverd</p>
+<section id="images">
+  <div>
+    <% if(locals.data) { %>
+      <% data.forEach((el, i) => { %>
+        <a href="/search_q=<%=zoekTerm%>/detail=<%=i%>">
+          <img src="<%=el['img']['value']%>" alt="<%=el['title']['value']%>">
+        </a>
+      <% }) %>
+    <% } %>
+  </p>
+</section>
+<div class="loader"></div>
+<% include footer.ejs %>
+```
+### De app starten
+Je opent je terminal en navigeert naar folder waar de app staat. Omdat ik ```nodemon``` heb geinstalleerd, hoef je simpelweg alleen ```nodemon``` aan de terminal door te geven en de app start.

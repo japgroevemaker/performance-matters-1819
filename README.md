@@ -26,7 +26,7 @@ Doel: Critical Rendering path optimaliseren
 
 [Slides](...)
 
-### Week 3 - Going Offline 
+### Week 3 - Going Offline
 
 Doel: Webpagina's offline beschikbaar stellen
 
