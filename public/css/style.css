@@ -1,0 +1,56 @@
+h1 {
+  font-family: sans-serif;
+}
+
+header {
+  text-align: center;
+}
+
+form {
+  text-align: center;
+}
+
+#images  {
+  margin: auto;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#images a {
+  text-decoration: none;
+}
+
+.small-img h3 {
+  text-align: center;
+  color: #fff;
+}
+
+.small-img {
+  width: 20em;
+  height: 20em;
+  margin: 0.5em;
+  background-size: 140%;
+  background-repeat: no-repeat;
+  background-position: center;
+  transition: all 0.2s;
+  box-shadow: 6px 6px 0px -4px rgba(0,0,0,0.05);
+}
+
+.small-img:hover {
+  background-size: 160%;
+  transition: all 0.2s;
+  transform: scale(1.05, 1.05);
+}
+
+footer {
+  position: fixed;
+  bottom: 1em;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  height: auto;
+  text-align: center;
+}

@@ -1,25 +1,39 @@
 <% include header.ejs %>
 <header>
-  <img src="/image/logo.svg" />
   <h1>Doorzoek het stadsarchief</h1>
   <p>Vul een aan Amsterdam gerelateerde zoekterm in. Bijvoorbeeld: Rokin</p>
 </header>
 
 <form class="" action="/" method="post">
-  <input type="text" name="zoekTerm" placeholder="Zoek">
+  <input type="text" name="zoekTerm" placeholder="Zoek" autofocus>
   <input type="submit" name="button" value="Zoek">
 </form>
-<p id="error">Uw zoek opdracht heeft geen resultaten opgeleverd</p>
+
+<% if(locals.data) { %>
+<p>Uw zoek opdracht heeft <%=locals.data ? data.length : "nog geen"%> resultaten opgeleverd</p>
+<p>U zocht op: <%=zoekTerm%></p>
+<% } %>
+
 <section id="images">
-  <div>
     <% if(locals.data) { %>
       <% data.forEach((el, i) => { %>
         <a href="/search_q=<%=zoekTerm%>/detail=<%=i%>">
-          <img src="<%=el['img']['value']%>" alt="<%=el['title']['value']%>">
+          <div class="small-img" style="background-image: url(<%=el['img']['value']%>)">
+            <h3 title="<%=el['title']['value']%>"><%=el['title']['value']%></h3>
+          </div>
         </a>
       <% }) %>
     <% } %>
   </p>
 </section>
 <div class="loader"></div>
+
+<footer>
+  <% if(locals.data) { %>
+    <p>U zocht eerder op:</p>
+    <% zoekGeschiedenis.forEach(term => { %>
+     <a href="/search_q=<%=term%>"><%=term%></a>
+     <% }) %>
+     <% } %>
+</footer>
 <% include footer.ejs %>
