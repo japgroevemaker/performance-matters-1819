@@ -19,20 +19,11 @@ showHeader.onScroll()
 let font = {
   loader: function () {
 
-    // let FontFaceObserver = '/node_modules/fontfaceobserver/fontfaceobserver.js'
-    //
-    // let font = new FontFaceObserver('limelight');
-    // let html = document.documentElement;
-    //
-    // font.load().then(function () {
-    //   html.className += 'fonts-loaded'
-    // })
-
-    // var script = document.createElement('script');
-    // document.head.appendChild(script)
-    // script.src = '/js/fontfaceobserver.js';
-    // script.async = true;
-    document.body.onload = function (){
+    var script = document.createElement('script');
+    document.head.appendChild(script)
+    script.src = "/js/fontfaceobserver-16d7f1d0e2.js";
+    script.async = true;
+    script.onload = function (){
       loadFonts().then(onFontsLoaded);
     };
 
@@ -48,6 +39,7 @@ let font = {
 
     function onFontsLoaded() {
       document.documentElement.className += 'fonts-loaded'
+      document.cookie = 'fonts-loaded'
     }
   }
 }

@@ -29,12 +29,13 @@ let font = {
     // })
 
     var script = document.createElement('script');
-    script.src = 'js/fontfaceobserver.js';
+    document.head.appendChild(script)
+    script.src = "/js/fontfaceobserver.js";
     script.async = true;
-    script.onLoad = function (){
+    script.onload = function (){
       loadFonts().then(onFontsLoaded);
     };
-    document.head.appendChild(script)
+
 
     function loadFonts() {
       var headings = new FontFaceObserver('Limelight')
@@ -46,8 +47,8 @@ let font = {
     }
 
     function onFontsLoaded() {
-      let html = document.documentElement
-      html.documentElement.className += 'fonts-loaded'
+      document.documentElement.className += 'fonts-loaded'
+      document.cookie = 'fonts-loaded'
     }
   }
 }
