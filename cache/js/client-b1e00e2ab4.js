@@ -18,20 +18,24 @@ showHeader.onScroll()
 
 let font = {
   loader: function () {
-    // let font = new FontFaceObserver('tieten');
+
+    // let FontFaceObserver = '/node_modules/fontfaceobserver/fontfaceobserver.js'
+    //
+    // let font = new FontFaceObserver('limelight');
     // let html = document.documentElement;
     //
     // font.load().then(function () {
     //   html.className += 'fonts-loaded'
     // })
 
-    var script = document.createElement('script');
-    script.src = '../node_modules/fontfaceobserver/fontfaceobserver.js'
-    script.async = true
-    script.onLoad = function (){
+    // var script = document.createElement('script');
+    // document.head.appendChild(script)
+    // script.src = '/js/fontfaceobserver.js';
+    // script.async = true;
+    document.body.onload = function (){
       loadFonts().then(onFontsLoaded);
     };
-    document.head.appendChild(script)
+
 
     function loadFonts() {
       var headings = new FontFaceObserver('Limelight')
@@ -43,8 +47,7 @@ let font = {
     }
 
     function onFontsLoaded() {
-      let html = document.documentElement
-      html.documentElement.className += 'fonts-loaded'
+      document.documentElement.className += 'fonts-loaded'
     }
   }
 }
