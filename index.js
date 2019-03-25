@@ -5,21 +5,37 @@ const parser = bodyParser.urlencoded({extended: false}) // kijkt naar values in 
 const app = express();
 const fetch = require("node-fetch")
 const compression = require("compression")
+const fs = require("fs")
+const revManifest = '/rev-manifest.json';
 
 let data
 let zoekTerm = ""
 let zoekGeschiedenis = []
 
 app.set('view engine', 'ejs');
+
 app.use(compression())
+
 app.use((req, res, next)  =>{
   res.setHeader('Cache-Control', 'max-age=' + 365 * 24 * 60 * 60);
   next();
 })
-app.use(express.static('public')) // in welke map staan je EJS bestanden
+
+app.use((req, res, next) => {
+  res.locals = {
+    css: revUrl("css/style.css"),
+    js: revUrl("js/client.js"),
+    fontjs: revUrl("js/fontfaceobserver.js")
+  }
+  next()
+})
+
+app.use(express.static('cache/'))
+// in welke map staan je bron bestanden
 
 
 app.get("/", (req, res) => {
+
   res.render('index')
 })
 
@@ -30,12 +46,13 @@ app.post("/", parser, (req, res) => {
 })
 
 app.get("/search_q=:id", (req,res) => {
+  // console.log(img);
+
   let zoekTerm = req.params.id
   search(res, zoekTerm)
 })
 
 app.get("/search_q=:id/detail=:num", (req, res) => {
-
   let queryZoekTerm = req.params.id
   let num = req.params.num
 
@@ -72,7 +89,16 @@ function search(res, zoekTerm, num) {
   .then(resp => resp.json())
   .then(resp => {
     data = resp.results.bindings
-    console.log(resp.results.bindings[0]);
+    // console.log(resp.results.bindings[0]);
+
+
+function getImg() {
+  data.forEach((getImg) => {
+    let img = getImg.img.value;
+  })
+}
+// console.log(img);
+    // console.log(resp.results.bindings[0].img.value);
 
     if(num){
       res.render("detail", {data: data, num})
@@ -80,6 +106,11 @@ function search(res, zoekTerm, num) {
       res.render("index", {data: data, zoekTerm, zoekGeschiedenis})
     }
   }).catch(err => console.log(err));
+}
+
+function revUrl(url) {
+    let fileName = JSON.parse(fs.readFileSync("cache/rev-manifest.json", 'utf8'))
+    return fileName[url]
 }
 
 app.listen(4444)
