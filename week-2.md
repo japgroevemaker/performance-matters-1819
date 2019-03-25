@@ -56,7 +56,7 @@ Vervolgens moest ik de wijziging in mijn `link` tag doorvoeren.
 Daarna vervolgens eenmalig in de console `npm run revision` intypen en dan wordt alles geminifyd. Als ik nu in de toekomst mijn app start met `npm start` voert hij automatisch updates door voor `CSS` en `Javascript`.
 
 De website is significant sneller geworden.
-![Before](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/n0-caching2.png)
+![Before](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/No-caching2.png)
 ![After](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/caching.png)
 
 ### Font-loading
