@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run revision && nodemon app.js",
     "postbuild": "npm run revision",
-    "revision": "node tasks/revision-hash.js"
+    "revision": "node tasks/revision-hash.js && node tasks/revision-mincss.js",
+    "mincss": "node tasks/revision-mincss.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,8 @@
     "compression": "^1.7.4",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "fontfaceobserver": "^2.1.0",
+    "gulp-clean-css": "^4.0.0",
     "node-fetch": "^2.3.0",
     "nodemon": "^1.18.10",
     "url": "^0.11.0"

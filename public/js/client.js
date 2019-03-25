@@ -1,18 +1,18 @@
-let getSrc = {
-  schnitz: function () {
-    let img = document.querySelectorAll('img');
-    let div = document.querySelectorAll('.small-img')
+let showHeader = {
+  onScroll: function () {
+    window.onscroll = function() {
+      let scrollPosY = window.pageYOffset | document.body.scrollTop;
+      // console.log(scrollPosY);
 
-    img.forEach(values => {
-    img = values.getAttribute('src');
-      console.log(img);
-    })
+      let searchBar = document.querySelector("#search-bar");
 
-    div.forEach(jozef => {
-      jozef.style.backgroundImage = "url(" + img + ")"
-    })
-
-
+      if (scrollPosY > 500) {
+        searchBar.classList.add('sticky')
+      } else {
+        searchBar.classList.remove('sticky');
+      }
+    }
   }
 }
-// getSrc.schnitz()
+showHeader.onScroll()
+
