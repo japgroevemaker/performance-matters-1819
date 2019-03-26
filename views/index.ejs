@@ -21,7 +21,7 @@
 <section id="images">
     <% if(locals.data) { %>
       <% data.forEach((el, i) => { %>
-        <a href="/search_q=<%=zoekTerm%>/detail=<%=i%>">
+        <a href="/search_q=<%=zoekTerm%>/detail=<%=i%>" aria-label="ADAM-net">
           <div class="small-img" style="background-image: url(<%=el['img']['value']%>)">
             <!-- <h3 title="<%=el['title']['value']%>"><%=el['title']['value']%></h3> -->
           </div>

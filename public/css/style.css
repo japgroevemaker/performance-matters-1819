@@ -232,7 +232,7 @@ form input[type="text"]:focus {
   width: 20em;
   height: 20em;
   margin: 0.5em;
-  background-size: 140%;
+  background-size: 150%;
   background-repeat: no-repeat;
   background-position: center;
   transition: all 0.2s;

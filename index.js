@@ -8,6 +8,7 @@ const compression = require("compression")
 const fs = require("fs")
 const revManifest = '/rev-manifest.json';
 
+
 let data
 let zoekTerm = ""
 let zoekGeschiedenis = []
@@ -92,13 +93,20 @@ function search(res, zoekTerm, num) {
     // console.log(resp.results.bindings[0]);
 
 
-function getImg() {
-  data.forEach((getImg) => {
-    let img = getImg.img.value;
-  })
-}
-// console.log(img);
-    // console.log(resp.results.bindings[0].img.value);
+
+//   const img = data.map((getImg) => {
+//     return getImg.img.value;
+//   })
+// gm(img)
+// .resize(250, 250)
+// .colors(1)
+// .toBuffer('RGB', function (error, buffer) {
+//   // console.log(buffer.slice(0, 3));
+//   console.log('hij doet iets');
+//   console.log(img);
+// });
+
+
 
     if(num){
       res.render("detail", {data: data, num})
