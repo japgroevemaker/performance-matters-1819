@@ -123,14 +123,6 @@ header {
   text-align: center;
 }
 
-/* h1 {
-  font-family: var(--headings), sans-serif;
-} */
-
-/* p, a {
-  font-family: var(--paragraph);
-} */
-
 form {
   display: flex;
   flex-direction: row;

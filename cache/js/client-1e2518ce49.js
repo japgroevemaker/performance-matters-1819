@@ -16,9 +16,17 @@ let showHeader = {
 }
 showHeader.onScroll()
 
-<<<<<<< HEAD
 let font = {
   loader: function () {
+
+    // let FontFaceObserver = '/node_modules/fontfaceobserver/fontfaceobserver.js'
+    //
+    // let font = new FontFaceObserver('limelight');
+    // let html = document.documentElement;
+    //
+    // font.load().then(function () {
+    //   html.className += 'fonts-loaded'
+    // })
 
     var script = document.createElement('script');
     document.head.appendChild(script)
@@ -45,5 +53,3 @@ let font = {
   }
 }
 font.loader()
-=======
->>>>>>> 665d53f8eced46421067b4069ca1efe3d49b17b9
