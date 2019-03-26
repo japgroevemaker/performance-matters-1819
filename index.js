@@ -26,7 +26,8 @@ app.use((req, res, next) => {
   res.locals = {
     css: revUrl("css/style.css"),
     js: revUrl("js/client.js"),
-    fontjs: revUrl("js/fontfaceobserver.js")
+    sw: revUrl("service-worker-registration.js"),
+    font: revUrl("js/fontfaceobserver.js")
   }
   next()
 })
@@ -47,7 +48,6 @@ app.post("/", parser, (req, res) => {
 })
 
 app.get("/search_q=:id", (req,res) => {
-  // console.log(img);
 
   let zoekTerm = req.params.id
   search(res, zoekTerm)
@@ -91,22 +91,6 @@ function search(res, zoekTerm, num) {
   .then(resp => {
     data = resp.results.bindings
     // console.log(resp.results.bindings[0]);
-
-
-
-//   const img = data.map((getImg) => {
-//     return getImg.img.value;
-//   })
-// gm(img)
-// .resize(250, 250)
-// .colors(1)
-// .toBuffer('RGB', function (error, buffer) {
-//   // console.log(buffer.slice(0, 3));
-//   console.log('hij doet iets');
-//   console.log(img);
-// });
-
-
 
     if(num){
       res.render("detail", {data: data, num})

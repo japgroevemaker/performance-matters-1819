@@ -19,20 +19,13 @@ showHeader.onScroll()
 let font = {
   loader: function () {
 
-fetch("./rev-manifest.json")
-  .then(res => res.json())
-  .then(data => {
-
     var script = document.createElement('script');
     document.head.appendChild(script)
-    script.src = data["js/fontfaceobserver.js"];
+    script.src = "/js/<%=font%>";
     script.async = true;
     script.onload = function (){
       loadFonts().then(onFontsLoaded);
     };
-  })
-
-
 
 
     function loadFonts() {

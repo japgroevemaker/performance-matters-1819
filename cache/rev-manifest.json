@@ -1,4 +1,7 @@
 {
   "css/style.css": "css/style-022afbd143.css",
-  "js/client.js": "js/client-1af7b56e30.js"
+  "js/client.js": "js/client-b49051b214.js",
+  "js/fontfaceobserver.js": "js/fontfaceobserver-16d7f1d0e2.js",
+  "service-worker-registration.js": "service-worker-registration-217a113e75.js",
+  "service-worker.js": "service-worker-315d7c40df.js"
 }

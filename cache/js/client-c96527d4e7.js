@@ -22,7 +22,7 @@ let font = {
 fetch("./rev-manifest.json")
   .then(res => res.json())
   .then(data => {
-
+    console.log(data);
     var script = document.createElement('script');
     document.head.appendChild(script)
     script.src = data["js/fontfaceobserver.js"];
