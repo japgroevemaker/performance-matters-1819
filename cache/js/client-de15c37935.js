@@ -16,6 +16,7 @@ let showHeader = {
 }
 showHeader.onScroll()
 
+<<<<<<< HEAD
 let font = {
   loader: function () {
 
@@ -44,3 +45,5 @@ let font = {
   }
 }
 font.loader()
+=======
+>>>>>>> 665d53f8eced46421067b4069ca1efe3d49b17b9
