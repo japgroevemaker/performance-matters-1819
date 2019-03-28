@@ -22,20 +22,6 @@ self.addEventListener('install', function(e) {
 
 self.addEventListener('activate', function(e) {
   console.log("[ServiceWorker] Activated");
-
-  e.waitUntil(
-
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(cacheNames.map(function(thisCacheName){
-
-        if (thisCacheName !== cacheName) {
-
-          console.log("[ServiceWorker] Removing Cached files from", thisCacheName);
-          return caches.delete(thisCacheName)
-        }
-      }))
-    })
-  )
 })
 
 self.addEventListener('fetch', function(e) {

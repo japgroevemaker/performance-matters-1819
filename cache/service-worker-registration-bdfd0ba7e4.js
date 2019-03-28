@@ -6,7 +6,7 @@ fetch("./rev-manifest.json")
       navigator.serviceWorker
         .register(data["service-worker.js"])
         .then(function(registration){
-          console.log("Service worker registered");
+          console.log("Service worker registered", registration);
         })
         .catch(function(err) {
           console.log("service worker failed to register", err);

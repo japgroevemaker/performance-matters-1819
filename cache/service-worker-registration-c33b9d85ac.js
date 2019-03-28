@@ -4,9 +4,9 @@ fetch("./rev-manifest.json")
     if("serviceWorker" in navigator){
 
       navigator.serviceWorker
-        .register(data["service-worker.js"])
+        .register(data["service-worker.js"], {scope: 'public/'})
         .then(function(registration){
-          console.log("Service worker registered");
+          // console.log("Service worker registered", registration);
         })
         .catch(function(err) {
           console.log("service worker failed to register", err);
