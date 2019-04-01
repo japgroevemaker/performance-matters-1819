@@ -32,9 +32,6 @@ fetch("./rev-manifest.json")
     };
   })
 
-
-
-
     function loadFonts() {
       var headings = new FontFaceObserver('Limelight')
       var paragraph = new FontFaceObserver('Poppins');
@@ -51,3 +48,39 @@ fetch("./rev-manifest.json")
   }
 }
 font.loader()
+
+let onlineOffline = {
+  check: function(){
+
+    let button = document.querySelector('#button')
+    let offline = document.querySelector('#offline');
+    let close = document.querySelector('#offline h2');
+
+    close.addEventListener('click', function() {
+      offline.classList.remove('show')
+    })
+
+    if (navigator.onLine == false) {
+      offline.classList.add('show')
+      button.disabled = 'disabled'
+      button.style.backgroundColor = '#ccc'
+    } else {
+      offline.classList.remove('show')
+      button.style.backgroundColor = 'var(--barley-brown)'
+      button.disabled = ''
+    }
+
+    window.addEventListener("offline", function(e){
+      offline.classList.add('show')
+      button.disabled = 'disabled'
+      button.style.backgroundColor = '#ccc'
+    })
+
+    window.addEventListener("online", function (e) {
+      offline.classList.remove('show')
+      button.style.backgroundColor = 'var(--barley-brown)'
+      button.disabled = ''
+    })
+  }
+}
+onlineOffline.check();

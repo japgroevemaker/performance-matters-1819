@@ -13,7 +13,7 @@ Er is 12 uur ingeroosterd om deze week zelfstandig aan de opdrachten van dit vaa
 
 
 ### Opdracht 1: Implementeer een Service Worker
-Bedenk hoe jij de Service Worker wil implementeren in jou OBA app. Maak hiervoor een job story aan. Zorg ervoor dat je in ieder geval een aantal statische assets cached en serveert met de Worker. Geef ook feedback aan de gebruiker over de online/offline state. 
+Bedenk hoe jij de Service Worker wil implementeren in jou OBA app. Maak hiervoor een job story aan. Zorg ervoor dat je in ieder geval een aantal statische assets cached en serveert met de Worker. Geef ook feedback aan de gebruiker over de online/offline state.
 
 Vermeld je job story  in de README.md
 
@@ -25,12 +25,11 @@ Installeer je app op een online webserver. Dan kan de web app niet alleen lokaal
 Dit kan bijvoorbeeld bij Digital Ocean of Netlify.
 
 #### Resources
-
+<!-- https://www.youtube.com/watch?v=BfL3pprhnms service worker -->
+<!-- https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content https mixed content -->
 
 
 
 <!-- Bindings -->
 [opdracht1]: https://github.com/cmda-minor-web/performance-matters-1819/blob/master/week-3.md#opdracht-1-implementeer-een-service-worker
 [opdracht2]: https://github.com/cmda-minor-web/performance-matters-1819/blob/master/week-3.md#opdracht-2-installeer-jou-app-op-een-online-webserver
-
-

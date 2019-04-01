@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run revision && nodemon app.js",
+    "start": "npm run revision && nodemon index.js",
     "postbuild": "npm run revision",
     "revision": "node tasks/revision-hash.js && node tasks/revision-mincss.js",
     "mincss": "node tasks/revision-mincss.js"

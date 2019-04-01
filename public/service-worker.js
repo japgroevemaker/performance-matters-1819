@@ -1,9 +1,8 @@
-
-const cacheName = "v6"
+const cacheName = "v2"
 const cacheFiles = [
   './',
   './service-worker-registration.js',
-  './search_q=joep'
+  './search_q=Dam'
 ]
 
 self.addEventListener('install', function(e) {

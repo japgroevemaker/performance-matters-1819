@@ -1,4 +1,8 @@
 <% include header.ejs %>
+<div id="offline">
+  <p>Oeps, je bent offline. In het archief zoeken gaat nu niet meer. Wel kan je je oude zoekresultaten bekijken via de balk onderin!</p>
+  <h2>X</h2>
+</div>
 <header>
   <h1>Doorzoek het stadsarchief</h1>
   <p>Vul een aan Amsterdam gerelateerde zoekterm in. Bijvoorbeeld: Rokin</p>
@@ -7,7 +11,7 @@
 <section id="search-bar">
   <form class="" action="/" method="post">
     <input type="text" name="zoekTerm" placeholder="Zoek" autofocus>
-    <input type="submit" name="button" value="Zoek">
+    <input id="button" type="submit" name="button" value="Zoek">
   </form>
 
   <div class="search-parm">
@@ -23,7 +27,6 @@
       <% data.forEach((el, i) => { %>
         <a href="/search_q=<%=zoekTerm%>/detail=<%=i%>" aria-label="ADAM-net">
           <div class="small-img" style="background-image: url(<%=el['img']['value']%>)">
-            <!-- <h3 title="<%=el['title']['value']%>"><%=el['title']['value']%></h3> -->
           </div>
         </a>
       <% }) %>

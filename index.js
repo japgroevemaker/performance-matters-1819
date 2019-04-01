@@ -35,7 +35,6 @@ app.use((req, res, next) => {
 app.use(express.static('cache/'))
 // in welke map staan je bron bestanden
 
-
 app.get("/", (req, res) => {
 
   res.render('index')
@@ -85,7 +84,8 @@ function search(res, zoekTerm, num) {
       ?cho sem:hasEndTimeStamp ?endDate .
 
       FILTER REGEX(?title, '${zoekTerm}', 'i')
-  }`;
+  } LIMIT 1000`;
+
   fetch(`${baseURL}${sparqlquery}${endUrl}`)
   .then(resp => resp.json())
   .then(resp => {

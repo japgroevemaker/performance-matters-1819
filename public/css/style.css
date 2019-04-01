@@ -103,6 +103,40 @@
   --paragraph: 'Poppins', sans-serif;
 }
 
+.show {
+  top: 0 !important;
+  -webkit-animation: bounceInDown 0.65s;
+  animation: bounceInDown 0.65s;
+  transition: all 0.2s;
+}
+
+#offline {
+  background-color: var(--barley-brown);
+  width: 100%;
+  height: 5em;
+  position: fixed;
+  top: -100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+}
+
+#offline p {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 0;
+}
+
+#offline h2 {
+  font-family: var(--paragraph);
+  color: #fff;
+  font-size: 1.5em;
+  cursor: pointer;
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
+}
+
 html {
   font-family: Georgia, serif;
 }
