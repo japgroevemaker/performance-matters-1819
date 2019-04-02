@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npm run revision && nodemon index.js",
     "postbuild": "npm run revision",
-    "revision": "node tasks/revision-hash.js && node tasks/revision-mincss.js",
-    "mincss": "node tasks/revision-mincss.js"
+    "revision": "node tasks/revision-hash.js && node tasks/revision-mincss.js && node tasks/revision-minjs.js",
+    "mincss": "node tasks/revision-mincss.js",
+    "minjs": "node tasks/revision-minjs.js"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "gulp-postcss": "^8.0.0",
     "gulp-rev": "^9.0.0",
     "gulp-rev-replace": "^0.4.4",
+    "gulp-uglify-es": "^1.0.4",
     "postcss-load-config": "^2.0.0"
   }
 }

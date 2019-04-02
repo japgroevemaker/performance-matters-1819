@@ -116,3 +116,51 @@ font.loader()
 ```
 Een kleine aanpassing met toch veel effect.
 ![Before](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/before_font.png)
+
+# CSS + JS minifier
+In een later stadium heb ik er ook een CSS en een JS minifier aan toegevoegd.
+Dit heb ik gedaan omdat mijn CSS en JS bestand toch wel groot zijn geworden na de styling + het implementeren van de functionaliteiten. Daarnaast had ik natuurlijk ook nog te maken met het `fontfaceobserver.js` bestand.
+
+## Implementatie
+In het `revision-mincss.js` bestand doe je het volgende.
+```js
+let gulp = require('gulp');
+let cleanCSS = require('gulp-clean-css');
+
+gulp.src('cache/css/*.css')
+  .pipe(cleanCSS({compatibility: 'ie8'}))
+  .pipe(gulp.dest("cache/css"))
+```
+Vervolgens doe je het soort gelijke in het `revision-minjs.js` bestand.
+```js
+let gulp = require('gulp');
+let uglify = require('gulp-uglify-es').default;
+
+gulp.src('cache/js/*.js')
+  .pipe(uglify())
+  .pipe(gulp.dest("cache/js"))
+```
+In de basis vertel je hier waar je de bestanden die geminifyd moeten worden gevonden kunnen worden en waar ze weer neergezet moeten worden als ze geminifyd zijn.
+
+Daarna duik je je `scripts` van je `package.json` in.
+```js
+"start": "npm run revision && nodemon index.js",
+"postbuild": "npm run revision",
+"revision": "node tasks/revision-hash.js && node tasks/revision-mincss.js && node tasks/revision-minjs.js",
+"mincss": "node tasks/revision-mincss.js",
+"minjs": "node tasks/revision-minjs.js"
+```
+Hier vertel je je dependencies waar ze de css + js minifier kunnen vinden en dat ze hem moeten draaien als de app gestart word.
+
+## Resultaten
+De JS minifier voegt toe aan de performance van de website.
+Voor
+![Before](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/noJSmin.png)
+Na
+![Before](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/JSmin.png)
+
+De CSS minifier zet echter niet veel zode aan de dijk
+Voor
+![Before](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/noCSSmin.png)
+Na
+![Before](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/CSSmin.png)

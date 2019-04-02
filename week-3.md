@@ -111,6 +111,12 @@ Toen ik begon aan dit vak was mijn app nog niet je van het als het om Performanc
 Maar nu na 3 weken kan ik zeggen dat de missie, met mijn huidige kennis, toch aardig geslaagd is.
 ![Final Audit](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/final_audit.png)
 
+### Wat heb ik toegevoegd?
+- [ * ] CSS minifier
+- [ * ] JS minifier
+- [ * ] Font face observer
+- [ * ] Service worker
+
 ### Wat ik nog wil doen
 - [ ] Data in 'chuncks' serveren.
 - [ ] Foto's kunnen opslaan.
