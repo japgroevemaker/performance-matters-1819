@@ -1,5 +1,5 @@
 
-![live Demo](https://performance-matters-1819-cdfvmirfsb.now.sh/)
+[live Demo](https://performance-matters-1819-cdfvmirfsb.now.sh/)
 # Week 3
 In week 3 van performance matters was het de bedoeling een service worker in onze app te implementeren. Daarnaast moest de app ook op een online webserver geinstalleerd worden.
 
