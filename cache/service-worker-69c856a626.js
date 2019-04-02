@@ -14,7 +14,7 @@ self.addEventListener('install', function(e) {
       .then(function(cache) {
       console.log("[ServiceWorker] Caching cacheFiles");
       cache.addAll(cacheFiles);
-    }).then(() => self.skipWaiting())
+    })
   )
 })
 
@@ -52,18 +52,18 @@ self.addEventListener('fetch', function(e) {
     //     })
     //   })
     fetch(e.request)
-      .then(res => {
-        console.log(res)
+      .then(response => {
+        console.log(response)
         //make clone of response
-        const resClone = res.clone()
+        const responseClone = response.clone()
         //open cache
         caches
           .open(cacheName)
           .then(cache => {
             // Add response to cache
-            cache.put(e.request, resClone)
+            cache.put(e.request, responseClone)
           })
-        return res;
-      }).catch(err => caches.match(e.request).then(res => res))
+        return response;
+      }).catch(err => caches.match(e.request).then(response => response))
     )
 })

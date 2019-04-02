@@ -1,35 +1,116 @@
-# Opdrachten Week 3
-Minor Web Development - Performance Matters
 
-## Intentie
-Deze week gaan we de ervoor zorgen dat de OBA applicatie offline te gebruiken is.
+# Week 3
+In week 3 van performance matters was het de bedoeling een service worker in onze app te implementeren. Daarnaast moest de app ook op een online webserver geinstalleerd worden.
 
-## Werkwijze
-Er is 12 uur ingeroosterd om deze week zelfstandig aan de opdrachten van dit vaak te werken. Probeer je werk goed te plannen! Tussentijds wordt in standup meetings en klassikale bijeenkomsten de voortgang gemonitord. Aan het eind van de week wordt je op theoretische kennis getoetst en op het begrip van de code die je volgens de opdrachten schrijft.
+## Service Worker
+Na het college van Declan ging ik hoopvol aan de slag. Als eerst was het zaak de service worker aan te roepen en te registreren.
+```js
+fetch("./rev-manifest.json")
+  .then(res => res.json())
+  .then(data => {
+    if("serviceWorker" in navigator){
 
-## Opdrachten
-1. [Implementeer een Service Worker][opdracht1]
-2. [Installeer jou app op een online webserver][opdracht2]
+      navigator.serviceWorker
+        .register(data["service-worker.js"])
+        .then(function(registration){
+          console.log("Service worker registered");
+        })
+        .catch(function(err) {
+          console.log("service worker failed to register", err);
+        })
+    }
+  })
+```
+Omdat ik ```gulp-rev``` gebruik en daarom mijn ```service-worker.js``` steeds wordt ge-update onder een andere bestandsnaam, was het zaak om deze te fetchen vanuit ```rev-manifest.json```.
+Vervolgens ben ik aan de hand van dit [filmpje](https://www.youtube.com/watch?v=BfL3pprhnms) verder gegaan met het implementeren van de service worker. Hieronder vertel ik beknopt wat ik gedaan heb.
 
+Als eerst heb ik de versie aangegeven, dit doe je om er zo voor te zorgen dat je je cache als het waren kan updaten. Daarna heb ik gedefenieerd wat ik wil dat er sowieso gecached wordt, ongeacht of hier op gezocht wordt of niet. De zoekterm ```Dam``` zal offline dus altijd beschikbaar zijn in mijn geval.
+```js
+const cacheName = "v1"
+const cacheFiles = [
+  './',
+  './service-worker-registration.js',
+  './search_q=Dam'
+]
+```
+Vervolgens krijg je te maken met het `install`, `activate` en `fetch` event.
+Als eerst het `install` event.
+```js
+self.addEventListener('install', function(e) {
+  console.log("[ServiceWorker] Installed");
 
-### Opdracht 1: Implementeer een Service Worker
-Bedenk hoe jij de Service Worker wil implementeren in jou OBA app. Maak hiervoor een job story aan. Zorg ervoor dat je in ieder geval een aantal statische assets cached en serveert met de Worker. Geef ook feedback aan de gebruiker over de online/offline state.
+  e.waitUntil(
+    caches
+      .open(cacheName)
+      .then(function(cache) {
+      cache.addAll(cacheFiles);
+    })
+  )
+})
+```
+Hier in vertel je je cache dat hij de eerder gedefineerde `cacheFiles` aan de cache moet toevoegen.
 
-Vermeld je job story  in de README.md
+In het `activate` event verwijderen we bestanden uit de cache die niet meer nodig zijn.
+```js
+self.addEventListener('activate', function(e) {
 
-#### Resources
+  e.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(cacheNames.map(function(thisCacheName) {
+          if (thisCacheName !== cacheName) {
+            console.log("[ServiceWorker] Removing cached files from", thisCacheName);
+            return caches.delete(thisCacheName)
+          }
+      }))
+    })
+  )
+})
+```
+Er wordt door de cache heen `geloopt` en alles wat niet correspondeert met de huidige versie van de service worker, wordt verwijderd.
 
-### Opdracht 2: Installeer jou app op een online webserver
-Installeer je app op een online webserver. Dan kan de web app niet alleen lokaal maar ook online bekeken worden.
+In het `fetch` event haal je je gecachde bestande op.
+```js
+self.addEventListener('fetch', function(e) {
+  console.log("[ServiceWorker] Fetching", e.request.url);
 
-Dit kan bijvoorbeeld bij Digital Ocean of Netlify.
+  e.respondWith(
 
-#### Resources
-<!-- https://www.youtube.com/watch?v=BfL3pprhnms service worker -->
-<!-- https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content https mixed content -->
+    fetch(e.request)
+      .then(response => {
 
+        //make clone of response
+        const responseClone = response.clone()
+        //open cache
+        caches
+          .open(cacheName)
+          .then(cache => {
+            // Add response to cache
+            cache.put(e.request, responseClone)
+          })
+        return response;
+      }).catch(err => caches.match(e.request).then(response => response))
+    )
+})
+```
 
+## Webserver
+Ik heb mijn app geinstalleerd op [NOW](https://zeit.co/now). Dit ging echter niet zonder slag of stoot. Toen ik hem gedeployed had kreeg ik, als plaatjes wilde inladen, deze foutmelding. ![mixed content](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/mixedcontent.png)
+Dit kwam omdat mijn app over `HTTPS` geserveerd werd, maar de afbeeldingen die ik ophaalde werden over `HTTP` geserveerd.
 
-<!-- Bindings -->
-[opdracht1]: https://github.com/cmda-minor-web/performance-matters-1819/blob/master/week-3.md#opdracht-1-implementeer-een-service-worker
-[opdracht2]: https://github.com/cmda-minor-web/performance-matters-1819/blob/master/week-3.md#opdracht-2-installeer-jou-app-op-een-online-webserver
+Maar na wat [googlen](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/fixing-mixed-content) kwam ik er achter dat ik deze regel code in de `head` moet zetten.
+```html
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+```
+Dit stukje code zorgt ervoor dat de browser alle mixed content upgrade voordat de browser een netwerk request stuurt.
+
+## Opsomming
+Toen ik begon aan dit vak was mijn app nog niet je van het als het om Performance gaat
+![Audit 1](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/audit1_overview.png)
+
+Maar nu na 3 weken kan ik zeggen dat de missie, met mijn huidige kennis, toch aardig geslaagd is.
+![Final Audit](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/final_audit.png)
+
+### Wat ik nog wil doen
+- [ ] Data in 'chuncks' serveren.
+- [ ] Foto's kunnen opslaan.
+- [ ] Dominant color in afbeelding vinden en deze gebruiken als placeholder.
