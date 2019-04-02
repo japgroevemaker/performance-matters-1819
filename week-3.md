@@ -112,10 +112,10 @@ Maar nu na 3 weken kan ik zeggen dat de missie, met mijn huidige kennis, toch aa
 ![Final Audit](https://github.com/japgroevemaker/performance-matters-1819/blob/master/images/final_audit.png)
 
 ### Wat heb ik toegevoegd?
-- [ * ] CSS minifier
-- [ * ] JS minifier
-- [ * ] Font face observer
-- [ * ] Service worker
+- [x] CSS minifier
+- [x] JS minifier
+- [x] Font face observer
+- [x] Service worker
 
 ### Wat ik nog wil doen
 - [ ] Data in 'chuncks' serveren.
