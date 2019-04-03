@@ -2,7 +2,6 @@ let showHeader = {
   onScroll: function () {
     window.onscroll = function() {
       let scrollPosY = window.pageYOffset | document.body.scrollTop;
-      // console.log(scrollPosY);
 
       let searchBar = document.querySelector("#search-bar");
 

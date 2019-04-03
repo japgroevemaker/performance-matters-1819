@@ -3,6 +3,9 @@
 # Week 3
 In week 3 van performance matters was het de bedoeling een service worker in onze app te implementeren. Daarnaast moest de app ook op een online webserver geinstalleerd worden.
 
+## Job story
+Hoe kan ik, als ik in de sneltrein van Sloterdijk naar Haarlem zit, ook op het stukje waar geen internetverbinding is door kunnen gaan met wat ik aan het doen ben?
+
 ## Service Worker
 Na het college van Declan ging ik hoopvol aan de slag. Als eerst was het zaak de service worker aan te roepen en te registreren.
 ```js

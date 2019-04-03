@@ -13,15 +13,19 @@ let data
 let zoekTerm = ""
 let zoekGeschiedenis = []
 
+// Welke templating gebruik je?
 app.set('view engine', 'ejs');
 
+// Tekst compression
 app.use(compression())
 
+// Het cachen van je app
 app.use((req, res, next)  =>{
   res.setHeader('Cache-Control', 'max-age=' + 365 * 24 * 60 * 60);
   next();
 })
 
+// Waar kan revision-hash.js je bestanden vinden
 app.use((req, res, next) => {
   res.locals = {
     css: revUrl("css/style.css"),
@@ -32,26 +36,29 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(express.static('cache/'))
 // in welke map staan je bron bestanden
+app.use(express.static('cache/'))
 
+// Hier render je de homepagina
 app.get("/", (req, res) => {
-
   res.render('index')
 })
 
+// Wordt getriggered als je de zoekfunctie gebruikt en generenderd op de homepagina
 app.post("/", parser, (req, res) => {
   zoekTerm = req.body.zoekTerm
   console.log(zoekGeschiedenis);
   res.redirect(`/search_q=${zoekTerm}`);
 })
 
+// Hier wordt het resultaat van de zoekopdracht opgehaald
 app.get("/search_q=:id", (req,res) => {
-
   let zoekTerm = req.params.id
   search(res, zoekTerm)
 })
 
+// Hier wordt de aangeklikte afbeelding opgehaald en gerenderd.
+// Ook wordt hier gekeken naar of de data al bestaat, als dit het geval is hoeft hij niet opnieuw opgehaald te worden.
 app.get("/search_q=:id/detail=:num", (req, res) => {
   let queryZoekTerm = req.params.id
   let num = req.params.num
@@ -64,6 +71,7 @@ app.get("/search_q=:id/detail=:num", (req, res) => {
   }
 })
 
+// Definieren van de API van de OBA
 function search(res, zoekTerm, num) {
   zoekGeschiedenis.push(zoekTerm)
   const baseURL = "https://api.data.adamlink.nl/datasets/AdamNet/all/services/endpoint/sparql?default-graph-uri=&query="
@@ -86,12 +94,13 @@ function search(res, zoekTerm, num) {
       FILTER REGEX(?title, '${zoekTerm}', 'i')
   } LIMIT 1000`;
 
+  // Fetchen van de API
   fetch(`${baseURL}${sparqlquery}${endUrl}`)
   .then(resp => resp.json())
   .then(resp => {
     data = resp.results.bindings
-    // console.log(resp.results.bindings[0]);
 
+    // het renderen van het juiste nummer bij de juiste detailpagina
     if(num){
       res.render("detail", {data: data, num})
     } else {
@@ -100,10 +109,12 @@ function search(res, zoekTerm, num) {
   }).catch(err => console.log(err));
 }
 
+// het uitlezen van het rev-manifest.json bestand
 function revUrl(url) {
     let fileName = JSON.parse(fs.readFileSync("cache/rev-manifest.json", 'utf8'))
     return fileName[url]
 }
 
+// Op welke port de app gedraaid wordt.
 app.listen(4444)
 console.log('Port 4444');
