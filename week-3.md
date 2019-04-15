@@ -52,7 +52,7 @@ self.addEventListener('install', function(e) {
   )
 })
 ```
-Hier in vertel je je cache dat hij de eerder gedefineerde `cacheFiles` aan de cache moet toevoegen.
+Hier in vertel je je cache dat hij de eerder gedefineerde `cacheFiles` aan de cache moet toevoegen. `waitUntil` verelt de `event dispatcher` dat er 'werk' aan de gang is. In `serviceWorker` vertelt `waitUntil()` aan de browser dat het werk bezig is totdat de `Promise` is `resolved` en het de `serviceWorker` niet mag beëindigen. bij het `install event` zorgt `waitUntil` ervoor dat hij in dit event blijft tot dat deze taak voltooid is.
 
 In het `activate` event verwijderen we bestanden uit de cache die niet meer nodig zijn.
 ```js
@@ -72,7 +72,7 @@ self.addEventListener('activate', function(e) {
 ```
 Er wordt door de cache heen `geloopt` en alles wat niet correspondeert met de huidige versie van de service worker, wordt verwijderd.
 
-In het `fetch` event haal je je gecachde bestande op.
+In het `fetch` event haal je je gecachde bestande op. `fetch` gooit er een `Promise` uit en wacht tot deze `resolved` of `rejected` is. `respondWith()` voorkomt de browser's standaard `fetch` handling, en maakt het mogelijk de `Response` zelf van een `Promise` te voorzien.
 ```js
 self.addEventListener('fetch', function(e) {
   console.log("[ServiceWorker] Fetching", e.request.url);
@@ -105,7 +105,7 @@ Maar na wat [googlen](https://developers.google.com/web/fundamentals/security/pr
 ```html
 <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 ```
-Dit stukje code zorgt ervoor dat de browser alle mixed content upgrade voordat de browser een netwerk request stuurt.
+Dit stukje code zorgt ervoor dat de browser alle mixed content upgrade voordat de browser een netwerk request stuurt. Dit valt onder de [`Content security Policy (CSP)`](https://developers.google.com/web/fundamentals/security/csp/) `CSP` is een voor meerder doeleinde te gebruiken feature die je kunt gebruiken om `mixed content` te managen. [Mixed content](https://developers.google.com/web/fundamentals/security/prevent-mixed-content/what-is-mixed-content) Houd in dat de `HTML` over `HTTPS` geladen wordt, maar andere element zoals `imgages`, `videos` of `stylesheets` over `HTTP` geladen worden.
 
 ## Opsomming
 Toen ik begon aan dit vak was mijn app nog niet je van het als het om Performance gaat
@@ -124,3 +124,8 @@ Maar nu na 3 weken kan ik zeggen dat de missie, met mijn huidige kennis, toch aa
 - [ ] Data in 'chuncks' serveren.
 - [ ] Foto's kunnen opslaan.
 - [ ] Dominant color in afbeelding vinden en deze gebruiken als placeholder.
+
+## bronnen
+[req.params & req.query](https://stackabuse.com/get-query-strings-and-parameters-in-express-js/)
+[respondWith()](https://developer.mozilla.org/en-US/docs/Web/API/FetchEvent/respondWith)
+[waitUntil()](https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil)

@@ -10,6 +10,7 @@
     <a href="<%=data[num]['cho']['value']%>">Klik hier om naar de bronpagina te gaan</a>
     <div class="buttons">
       <% if(locals.num){ %>
+        <% console.log(num) %>
        <% if(parseInt(num) !== 0) { %>
          <a href="/search_q=<%=queryZoekTerm%>/detail=<%=parseInt(num)-1%>">prev</a>
        <% } %>

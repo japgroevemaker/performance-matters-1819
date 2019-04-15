@@ -13,6 +13,8 @@ let data
 let zoekTerm = ""
 let zoekGeschiedenis = []
 
+console.log(app.locals.title);
+
 // Welke templating gebruik je?
 app.set('view engine', 'ejs');
 
@@ -54,6 +56,7 @@ app.post("/", parser, (req, res) => {
 // Hier wordt het resultaat van de zoekopdracht opgehaald
 app.get("/search_q=:id", (req,res) => {
   let zoekTerm = req.params.id
+  console.log();
   search(res, zoekTerm)
 })
 
@@ -62,6 +65,7 @@ app.get("/search_q=:id", (req,res) => {
 app.get("/search_q=:id/detail=:num", (req, res) => {
   let queryZoekTerm = req.params.id
   let num = req.params.num
+
 
   if(queryZoekTerm === zoekTerm) {
     res.render("detail", {data: data, queryZoekTerm, num})
