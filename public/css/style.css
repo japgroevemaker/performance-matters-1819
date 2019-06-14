@@ -345,3 +345,89 @@ footer a:hover {
 .text {
   width: 40%;
 }
+
+@media (max-width: 55em){
+  form {
+    width: 80%;
+  }
+
+  .search-parm {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .detail-header {
+    width: 90%;
+    text-align: left;
+    font-size: 1.5em;
+  }
+
+  .info {
+    flex-direction: column;
+    width: 90%;
+  }
+
+  .info p {
+    line-height: 1.6em;
+    width: auto;
+  }
+
+  .text {
+    width: 70%;
+    margin: auto;
+  }
+
+  .info img {
+    margin-top: 2em;
+  }
+
+  .buttons{
+    text-align: center;
+    margin: 1em;
+  }
+
+}
+
+@media (max-width: 45em){
+  .sticky {
+    height: auto;
+  }
+
+  form {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  form input[type=text] {
+    width: 80%;
+    margin: auto;
+  }
+
+  form input[type=submit] {
+    width: 50%;
+    margin: 1em auto;
+  }
+
+  .search-parm {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  footer {
+    overflow-y: auto;
+  }
+
+  footer div {
+    flex-wrap: nowrap;
+  }
+}
+
+@media (max-width: 30em){
+  .detail-header {
+    font-size: 1.2em;
+  }
+
+  .text {
+    width: 100%;
+  }
+}

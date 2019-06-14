@@ -99,9 +99,7 @@ function search(res, zoekTerm, num) {
   } LIMIT 1000`;
 
   // Fetchen van de API
-  fetch(`${baseURL}${sparqlquery}${endUrl}`)
-  .then(resp => resp.json())
-  .then(resp => {
+  fetch(`${baseURL}${sparqlquery}${endUrl}`).then(resp => resp.json()).then(resp => {
     data = resp.results.bindings
 
     // het renderen van het juiste nummer bij de juiste detailpagina

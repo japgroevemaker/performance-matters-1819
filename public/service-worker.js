@@ -1,4 +1,4 @@
-const cacheName = "v2"
+const cacheName = "v3"
 const cacheFiles = [
   './',
   './service-worker-registration.js',
@@ -29,7 +29,9 @@ self.addEventListener('activate', function(e) {
             // console.log("[ServiceWorker] Removing cached files from", thisCacheName);
             return caches.delete(thisCacheName)
           }
-      }))
+      })).catch(function(err) {
+        console.log(err);
+      })
     })
   )
 })

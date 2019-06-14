@@ -1,39 +1,44 @@
-const cacheName = "v2"
+const cacheName = "v3"
 const cacheFiles = [
   './',
   './service-worker-registration.js',
   './search_q=Dam'
 ]
 
+// Cache files 'installeren'
 self.addEventListener('install', function(e) {
-  console.log("[ServiceWorker] Installed");
+  // console.log("[ServiceWorker] Installed");
 
   e.waitUntil(
     caches
       .open(cacheName)
       .then(function(cache) {
-      console.log("[ServiceWorker] Caching cacheFiles");
+      // console.log("[ServiceWorker] Caching cacheFiles");
       cache.addAll(cacheFiles);
     })
   )
 })
 
+// Oude cachefiles verwijderen
 self.addEventListener('activate', function(e) {
-  console.log("[ServiceWorker] Activated");
+  // console.log("[ServiceWorker] Activated");
   e.waitUntil(
     caches.keys().then(function(cacheNames) {
       return Promise.all(cacheNames.map(function(thisCacheName) {
           if (thisCacheName !== cacheName) {
-            console.log("[ServiceWorker] Removing cached files from", thisCacheName);
+            // console.log("[ServiceWorker] Removing cached files from", thisCacheName);
             return caches.delete(thisCacheName)
           }
-      }))
+      })).catch(function(err) {
+        console.log(err);
+      })
     })
   )
 })
 
+// Fetchen van de cache
 self.addEventListener('fetch', function(e) {
-  console.log("[ServiceWorker] Fetching", e.request.url);
+  // console.log("[ServiceWorker] Fetching", e.request.url);
 
   e.respondWith(
     // fetch(e.request)
@@ -53,14 +58,14 @@ self.addEventListener('fetch', function(e) {
     //   })
     fetch(e.request)
       .then(response => {
-        console.log(response)
-        //make clone of response
+        // console.log(response)
+        //Clone maken van response
         const responseClone = response.clone()
         //open cache
         caches
           .open(cacheName)
           .then(cache => {
-            // Add response to cache
+            // Response toevoegen aan cache
             cache.put(e.request, responseClone)
           })
         return response;
